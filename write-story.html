@@ -1,3 +1,5 @@
+<!-- write-story.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +14,7 @@
     </header>
     <section id="story-form">
         <!-- Story submission form goes here -->
-        <form id="story-submit-form">
+        <form id="story-submit-form" onsubmit="submitStory(event)">
             <!-- Form fields for story title, author, content, etc. -->
             <label for="title">Title:</label>
             <input type="text" id="title" name="title" required>
@@ -26,6 +28,32 @@
     <footer>
         <p>&copy; 2024 Storytelling Website. All rights reserved.</p>
     </footer>
-    <script src="write-story.js"></script>
+
+    <script>
+        function submitStory(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Get form data
+            var formData = new FormData(document.getElementById('story-submit-form'));
+
+            // Example: Submit form data to backend server via AJAX
+            fetch('/api/stories', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Story submitted successfully!');
+                    window.location.href = '/'; // Redirect to homepage after submission
+                } else {
+                    throw new Error('Failed to submit story');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting story:', error);
+                alert('Failed to submit story. Please try again.');
+            });
+        }
+    </script>
 </body>
 </html>
